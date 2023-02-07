@@ -15,6 +15,8 @@ variables:
   containerRegistry: 'crdoscu.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/ready/AzNamingTool/Dockerfile'
   tag: '$(Build.BuildId)'
+  azureSubscription: 'Development'
+  appName: 'app-do-naming-scu'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -38,12 +40,20 @@ stages:
         tags: |
           $(tag)
           
-    - task: AzureRmWebAppDeployment@4
+        ## Add the below snippet at the end of your pipeline
+    - task: AzureWebAppContainer@1
+      displayName: 'Azure Web App on Container Deploy'
       inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Development'
-        appType: 'webAppContainer'
-        WebAppName: 'app-do-naming-scu'
-        DockerNamespace: '$(containerRegistry)'
-        DockerRepository: '$(imageRepository)'
-        DockerImageTag: '$(tag)'
+        azureSubscription: $(azureSubscription)
+        appName: $(appName)
+        imageName: $(containerRegistry)/$(imageRepository):$(tag)
+        
+    # - task: AzureRmWebAppDeployment@4
+    #   inputs:
+    #     ConnectionType: 'AzureRM'
+    #     azureSubscription: 'Development'
+    #     appType: 'webAppContainer'
+    #     WebAppName: 'app-do-naming-scu'
+    #     DockerNamespace: '$(containerRegistry)'
+    #     DockerRepository: '$(imageRepository)'
+    #     DockerImageTag: '$(tag)'
