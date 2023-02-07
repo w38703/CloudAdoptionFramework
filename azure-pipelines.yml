@@ -14,7 +14,7 @@ variables:
   imageRepository: 'azurenamingtool'
   containerRegistry: 'crdoscu.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/ready/AzNamingTool/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: 'latest'#'$(Build.BuildId)'
   azureSubscription: 'Development'
   appName: 'app-do-naming-scu'
 
@@ -47,7 +47,7 @@ stages:
         azureSubscription: $(azureSubscription)
         appName: $(appName)
         imageName: $(containerRegistry)/$(imageRepository):$(tag)
-        
+
     # - task: AzureRmWebAppDeployment@4
     #   inputs:
     #     ConnectionType: 'AzureRM'
